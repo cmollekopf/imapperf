@@ -1,0 +1,13 @@
+aioimaplib==0.7.11
+asn1crypto==0.22.0
+asyncio==3.4.3
+certifi==2017.7.27.1
+cffi==1.10.0
+chardet==3.0.4
+cryptography==2.0.3
+idna==2.6
+pycparser==2.18
+pyOpenSSL==17.2.0
+requests==2.18.4
+six==1.10.0
+urllib3==1.22
