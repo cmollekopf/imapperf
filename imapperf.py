@@ -110,6 +110,18 @@ def check_mailbox(host, port, user, password):
             print(data)
             continue
 
+        # Search in subject
+        res, data = yield from imap_client.uid_search('SUBJECT "subject"')
+        checkResult(res)
+
+        # Search in to
+        res, data = yield from imap_client.uid_search('TO "doe"')
+        checkResult(res)
+
+        # Search in body
+        res, data = yield from imap_client.uid_search('BODY "body"')
+        checkResult(res)
+
         # Search and fetch searched messages
         res, data = yield from imap_client.uid_search('ALL')
         checkResult(res)
