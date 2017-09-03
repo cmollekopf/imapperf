@@ -68,8 +68,7 @@ def quote(s):
     return '"' + s + '"'
 
 @asyncio.coroutine
-def check_mailbox(host, port, user, password):
-    start = time.time()
+def establish_connection(host, port, user, password):
     timeout = 8
 
     #We retry in case of failure
@@ -87,9 +86,18 @@ def check_mailbox(host, port, user, password):
     else:
         print("Failed to connect")
         log.error('Failed to connect')
-        return {}
+        return None
 
     yield from imap_client.login(user, password)
+    return imap_client
+
+@asyncio.coroutine
+def check_mailbox(host, port, user, password):
+    start = time.time()
+
+    imap_client = yield from establish_connection(host, port, user, password)
+    if imap_client is None:
+        return {}
 
     #Get all folders
     res, folderData = yield from imap_client.list('*', '%')
