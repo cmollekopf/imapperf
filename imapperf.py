@@ -70,7 +70,6 @@ def quote(s):
 @asyncio.coroutine
 def establish_connection(host, port, user, password):
     timeout = 8
-
     #We retry in case of failure
     for i in range(3):
         try:
@@ -101,8 +100,13 @@ def check_mailbox(host, port, user, password):
 
     res, data = yield from imap_client.namespace()
     checkResult(res)
+
     res, data = yield from imap_client.getmetadata("INBOX", "(DEPTH infinity) (/shared/ /private/)")
     checkResult(res)
+
+    res, data = yield from imap_client.myrights('INBOX')
+    checkResult(res)
+
     #Get all folders
     res, folderData = yield from imap_client.list('*', '%')
     checkResult(res)
@@ -127,6 +131,7 @@ def check_mailbox(host, port, user, password):
 
         res, data = yield from imap_client.uid_thread('ALL')
         checkResult(res)
+
         # Search in subject
         res, data = yield from imap_client.uid_search('SUBJECT "subject"')
         checkResult(res)
