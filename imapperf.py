@@ -99,6 +99,10 @@ def check_mailbox(host, port, user, password):
     if imap_client is None:
         return {}
 
+    res, data = yield from imap_client.namespace()
+    checkResult(res)
+    res, data = yield from imap_client.getmetadata("INBOX", "(DEPTH infinity) (/shared/ /private/)")
+    checkResult(res)
     #Get all folders
     res, folderData = yield from imap_client.list('*', '%')
     checkResult(res)
@@ -118,6 +122,11 @@ def check_mailbox(host, port, user, password):
             print(data)
             continue
 
+        res, data = yield from imap_client.uid_sort('(SUBJECT REVERSE DATE)', 'ALL')
+        checkResult(res)
+
+        res, data = yield from imap_client.uid_thread('ALL')
+        checkResult(res)
         # Search in subject
         res, data = yield from imap_client.uid_search('SUBJECT "subject"')
         checkResult(res)

@@ -1,4 +1,4 @@
-aioimaplib==0.7.11
+-e git+https://github.com/kolab-groupware/aioimaplib.git@7ecc8a81102bb3563262a80ed4252159db322764#egg=aioimaplib
 asn1crypto==0.22.0
 asyncio==3.4.3
 certifi==2017.7.27.1
